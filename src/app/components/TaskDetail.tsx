@@ -1,21 +1,20 @@
-// components/TaskDetail.tsx
-
 import React from 'react';
 import { Task } from '../types';
+import { Paper, Text} from '@mantine/core';
 
 interface TaskDetailProps {
-  task: Task; // Substitua 'Task' pelo tipo de objeto de tarefa em sua aplicação
+  task: Task;
 }
 
 const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
   return (
-    <div>
+    <Paper bg="blue">
       <h2>Detalhes da Tarefa</h2>
-      <p>Título: {task.title}</p>
-      <p>Descrição: {task.description}</p>
-      <p>Data: {task.date}</p>
-      <p>Duração: {task.duration} minutos</p>
-    </div>
+      <Text>Título: {task.title}</Text>
+      <Text>Descrição: {task.description}</Text>
+      <Text>Data: {task.date}</Text>
+      <Text>Duração: {task.duration} minutos</Text>
+    </Paper>
   );
 };
 

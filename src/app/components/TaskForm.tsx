@@ -1,7 +1,58 @@
-// Componente TaskForm não precisa da prop 'addTaskToList'
 import React, { useState } from 'react';
 import { Task } from '../types';
-import { createTask } from '@/services/task.services';
+import styled from 'styled-components'; // Importe styled-components
+
+const FormContainer = styled.div`
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+const FormTitle = styled.h2`
+  font-size: 2rem;
+  margin-bottom: 20px;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #191919;
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #191919;
+`;
+
+const Button = styled.button`
+  background-color: #191919;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: .7
+  }
+`;
 
 interface TaskFormProps {
   onSubmit: (task: Task) => void;
@@ -21,15 +72,23 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
     setTask({ ...task, [name]: value });
   };
 
+  const formatarDataParaExibicao = (data: string): string => {
+    const dataObj = new Date(data);
+    const dia = dataObj.getDate().toString().padStart(2, '0');
+    const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
+    const ano = dataObj.getFullYear().toString().slice(-2);
+  
+    return `${dia}/${mes}/${ano}`;
+  };
+  
   const handleSubmit = async () => {
-    // Realize a validação dos campos antes de submeter
     if (!task.title || !task.description || !task.date || task.duration <= 0) {
       setFormErrors('Por favor, preencha todos os campos corretamente.');
       return;
     }
 
     try {
-      await onSubmit(task); // Chame a função onSubmit para criar a tarefa
+      await onSubmit(task); 
       setTask({
         title: '',
         description: '',
@@ -43,29 +102,29 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <div>
-      <h2>Formulário de Tarefa</h2>
+    <FormContainer>
+      <FormTitle>Formulário de Tarefa</FormTitle>
       <form onSubmit={handleSubmit}>
-        {formErrors && <p style={{ color: 'red' }}>{formErrors}</p>}
+        {formErrors && <ErrorMessage>{formErrors}</ErrorMessage>}
         <div>
-          <label>Título</label>
-          <input type="text" name="title" value={task.title} onChange={handleChange} />
+          <Label>Título</Label>
+          <Input type="text" name="title" value={task.title} onChange={handleChange} />
         </div>
         <div>
-          <label>Descrição</label>
-          <textarea name="description" value={task.description} onChange={handleChange} />
+          <Label>Descrição</Label>
+          <TextArea name="description" value={task.description} onChange={handleChange} />
         </div>
         <div>
-          <label>Data</label>
-          <input type="date" name="date" value={task.date} onChange={handleChange} />
+          <Label>Data</Label>
+          <Input type="date" name="date" value={task.date ? formatarDataParaExibicao(task.date) : ''} onChange={handleChange} />
         </div>
         <div>
-          <label>Duração (minutos)</label>
-          <input type="number" name="duration" value={task.duration} onChange={handleChange} />
+          <Label>Duração (minutos)</Label>
+          <Input type="number" name="duration" value={task.duration} onChange={handleChange} />
         </div>
-        <button type="submit">Criar Tarefa</button>
+        <Button type="submit">Criar Tarefa</Button>
       </form>
-    </div>
+    </FormContainer>
   );
 };
 

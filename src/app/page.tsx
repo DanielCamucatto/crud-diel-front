@@ -4,6 +4,21 @@ import TaskForm from './components/TaskForm';
 import TaskListView from './components/TaskView';
 import { Task } from './types';
 import { loadTasks, createTask } from '../services/task.services';
+import styled from 'styled-components';
+import { MantineProvider } from '@mantine/core';
+import NavbarComponent from './components/Navbar';
+
+export const HomeContainer = styled.div`
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  margin: 0 auto;
+`;
+
+export const MainContent = styled.main`
+ display: flex; 
+ gap: 40px;
+`;
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -18,7 +33,6 @@ export default function Home() {
       }
     };
 
-    // Chame a função para carregar tarefas ao montar o componente
     handleLoadTasks();
   }, []);
 
@@ -32,9 +46,15 @@ export default function Home() {
   };
 
   return (
-    <main>
-      <TaskForm onSubmit={handleCreateTask} />
-      <TaskListView tasksList={tasks} />
-    </main>
+    <MantineProvider>
+      <NavbarComponent />
+      <HomeContainer>
+        <MainContent>
+          <TaskForm onSubmit={handleCreateTask} />
+          <TaskListView tasksList={tasks} />
+        </MainContent>
+      </HomeContainer>
+    </MantineProvider>
+
   );
 }
