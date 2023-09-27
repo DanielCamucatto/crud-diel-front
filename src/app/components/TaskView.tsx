@@ -5,6 +5,7 @@ import { loadTasks, updateTask, deleteTask, createTask } from '../../services/ta
 import styled from 'styled-components';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toast } from 'react-toastify';
 
 const Container = styled.div`
   background-color: #f0f0f0;
@@ -153,6 +154,7 @@ const TaskListView: React.FC<TaskListViewProps> = ({ tasksList }) => {
     try {
       await deleteTask(taskId);
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+      toast.error('Tarefa deletada')
     } catch (error) {
       console.error('Erro ao excluir a tarefa', error);
     }

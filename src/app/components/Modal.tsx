@@ -46,7 +46,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSubmit }
 
   };
 
-  if (window.matchMedia('(max-width: 768px)').matches) {
+  if (typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches) {
     modalStyles.width = '90%'; 
   }
 

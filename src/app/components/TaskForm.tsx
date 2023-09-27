@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Task } from '../types';
-import styled from 'styled-components'; // Importe styled-components
+import styled from 'styled-components';
+import { toast } from 'react-toastify';
 
 const FormContainer = styled.div`
   background-color: #f0f0f0;
@@ -8,6 +9,7 @@ const FormContainer = styled.div`
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
+
 const FormTitle = styled.h2`
   font-size: 2rem;
   margin-bottom: 20px;
@@ -50,7 +52,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    opacity: .7
+    opacity: 0.7;
   }
 `;
 
@@ -65,6 +67,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
     date: '',
     duration: 0,
   });
+
   const [formErrors, setFormErrors] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -72,15 +75,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
     setTask({ ...task, [name]: value });
   };
 
-  const formatarDataParaExibicao = (data: string): string => {
-    const dataObj = new Date(data);
-    const dia = dataObj.getDate().toString().padStart(2, '0');
-    const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
-    const ano = dataObj.getFullYear().toString().slice(-2);
-  
-    return `${dia}/${mes}/${ano}`;
-  };
-  
   const handleSubmit = async () => {
     if (!task.title || !task.description || !task.date || task.duration <= 0) {
       setFormErrors('Por favor, preencha todos os campos corretamente.');
@@ -88,7 +82,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
     }
 
     try {
-      await onSubmit(task); 
+      const formattedTask = { ...task, date: formatarDataParaAPI(task.date) };
+      await onSubmit(formattedTask);
       setTask({
         title: '',
         description: '',
@@ -96,9 +91,20 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
         duration: 0,
       });
       setFormErrors(null);
+      toast.success('Tarefa Criada com sucesso')
     } catch (error) {
       console.error('Erro ao criar a tarefa', error);
     }
+  };
+
+  const formatarDataParaAPI = (data: string): string => {
+    if (!data) return '';
+    const partesData = data.split('/');
+    if (partesData.length === 3) {
+      const [dia, mes, ano] = partesData;
+      return `${ano}-${mes}-${dia}`;
+    }
+    return data;
   };
 
   return (
@@ -115,8 +121,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit }) => {
           <TextArea name="description" value={task.description} onChange={handleChange} />
         </div>
         <div>
-          <Label>Data</Label>
-          <Input type="date" name="date" value={task.date ? formatarDataParaExibicao(task.date) : ''} onChange={handleChange} />
+          <Label>Data (dd/MM/yyyy)</Label>
+          <Input type="text" name="date" value={task.date} onChange={handleChange} />
         </div>
         <div>
           <Label>Duração (minutos)</Label>
