@@ -101,10 +101,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@mantine/core@^7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-7.0.1.tgz#b2436f883e0984698bfd068983488ea2c08bb36d"
-  integrity sha512-cQqQWo5uZy6G+5WwEFRt6hoHwADVRy0IQ4pW+dyhcfp1aHYHf9C1T2vP/naUZR3nczYr5j63ZVgiSwqQaqc17Q==
+"@mantine/core@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-7.0.2.tgz#024a01f7e0359f7cf1ebabde657c3cc23958a323"
+  integrity sha512-aJodq48NE4FAgpzimPtT0Izr/dqhXkBwCDOYxgTTe+LpNwTzEJqBfZeysB2B3Aobr7MaEWPvvyUi3Uu9qL5y0g==
   dependencies:
     "@floating-ui/react" "^0.24.8"
     clsx "2.0.0"
