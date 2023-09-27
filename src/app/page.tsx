@@ -18,6 +18,10 @@ export const HomeContainer = styled.div`
 export const MainContent = styled.main`
  display: flex; 
  gap: 40px;
+
+ @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export default function Home() {

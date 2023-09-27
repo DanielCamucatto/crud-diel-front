@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faBars } from '@fortawesome/free-solid-svg-icons'; // Importe o ícone de hambúrguer aqui
 import styled from 'styled-components';
 
 const Header = styled.header`
-  background: linear-gradient(45deg, #181842, #363BC4) ;
+  background: linear-gradient(45deg, #181842, #363BC4);
   border-bottom: 1px solid #e0e0e0;
   padding: 10px 0;
 `;
@@ -37,6 +37,9 @@ const Navbar = styled.nav`
     align-items: center;
     margin: 0;
     padding: 0;
+    @media (max-width: 768px) {
+    display: none;
+  }
   }
 
   li {
@@ -109,13 +112,14 @@ const Dropdown = styled.div`
 `;
 
 const NavbarToggle = styled.i`
-  display: none;
   cursor: pointer;
   font-size: 24px;
-  color: #333;
+  color: #fff;
+  display: none;
 
   @media (max-width: 768px) {
     display: block;
+    margin-right: 10px;
   }
 `;
 
@@ -123,7 +127,7 @@ const PrivacyPopup = styled.div`
   display: none;
 
   @media (max-width: 768px) {
-    display: block;
+    display: none;
   }
 
   .privacy-popup-text-header {
@@ -175,11 +179,48 @@ const PrivacyPopup = styled.div`
   }
 `;
 
+const MobileNav = styled.nav<{ open: boolean }>`
+  background: linear-gradient(45deg, #181842, #363BC4);
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  text-align: center;
+  padding: 10px 0;
+  display: ${(props) => (props.open ? 'block' : 'none')};
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 15px;
+
+      a {
+        text-decoration: none;
+        color: #fff;
+        font-weight: bold;
+        font-size: 18px;
+
+        &:hover {
+          color: #007bff;
+        }
+      }
+    }
+  }
+`;
+
 const NavbarComponent = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const toggleMobileNav = () => {
+    setMobileNavOpen(!mobileNavOpen);
   };
 
   return (
@@ -188,7 +229,7 @@ const NavbarComponent = () => {
         <Logo href="/index.html">
           <img src="https://www.dielenergia.com/assets/img/diel/icon.svg" alt="Logo" />
         </Logo>
-        <Navbar style={{display: 'flex'}}>
+        <Navbar style={{ display: 'flex' }}>
           <ul>
             <li>
               <a href="/diel.html">
@@ -224,23 +265,37 @@ const NavbarComponent = () => {
             </div>
           </Dropdown>
         </Navbar>
-        <NavbarToggle className="bi bi-list mobile-nav-toggle"></NavbarToggle>
-        <PrivacyPopup id="privacy-poup-up">
-          <div className="privacy-popup-text-header">
-            <i className="ic-paper"></i>
-            <h2>Política de Privacidade</h2>
-            <a href="politica-de-privacidade.html">
-              <u>Sobre</u>
-            </a>
-          </div>
-          <div className="privacy-popup-text-body">
-            {/* Seu texto da política de privacidade aqui */}
-          </div>
-          <div className="privacy-popup-buttons">
-            <button id="privacy-poup-up-accept">Estou ciente</button>
-            <button id="privacy-poup-up-reject">Rejeitar</button>
-          </div>
-        </PrivacyPopup>
+        <NavbarToggle className="bi bi-list mobile-nav-toggle" onClick={toggleMobileNav}>
+          <FontAwesomeIcon icon={faBars} /> {/* Adicione o ícone de hambúrguer aqui */}
+        </NavbarToggle>
+        <MobileNav open={mobileNavOpen}>
+          <ul>
+            <li>
+              <a href="/diel.html">
+                <span>A Diel</span>
+              </a>
+            </li>
+            <li>
+              <a href="/solucao.html">Soluções</a>
+            </li>
+            <li>
+              <a href="/beneficios.html">Benefícios</a>
+            </li>
+            <li>
+              <a href="/contato.html">Contato</a>
+            </li>
+            <li>
+              <a href="https://dap.dielenergia.com/login" className="login">
+                Área do cliente
+              </a>
+            </li>
+            <li>
+              <a href="/en/index.html">
+                US
+              </a>
+            </li>
+          </ul>
+        </MobileNav>
       </Container>
     </Header>
   );

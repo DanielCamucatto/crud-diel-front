@@ -43,7 +43,12 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSubmit }
     placeItems: 'center',
     width: '50%',
     height: '50%'
+
   };
+
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    modalStyles.width = '90%'; 
+  }
 
   const backdropStyles: React.CSSProperties = {
     position: 'fixed',
